@@ -195,7 +195,7 @@ class homeworkHelper:
                                 print(f"等待结束，进行第 {retries} 次重试...")
                                 continue  # 继续下一次循环，即重试提交
                         print(response_json)
-                        if response_json["msg"] != "":
+                        if response_json.get("msg",""):
                             print("该题没有答题")
                             print("错误信息为：", response_json["msg"])
                         else:
