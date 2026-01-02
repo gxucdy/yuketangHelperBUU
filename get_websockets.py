@@ -82,4 +82,8 @@ def print_qrcode(qr_data):
     # 打印二维码
     os.system('cls' if os.name == 'nt' else 'clear')  # 清屏
     print("QRCode:")
-    img.show()
+    qr.print_ascii(invert=True) # 在命令行输出二维码
+    try :
+        img.show()  
+    except:
+        print("无法显示二维码，可以用链接自己生成二维码：", qr_data)
