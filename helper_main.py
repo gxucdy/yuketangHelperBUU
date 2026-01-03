@@ -99,6 +99,17 @@ if __name__ == "__main__":
             continue
         elif int(number) == 0:
             flag = False  # 输入合法则不需要循环
+            # 做不做作业
+            while True:
+                choice_hw = input("需不需要AI做作业（Y/N）：").strip()
+                if choice_hw in ('Y', 'y'):
+                    choice_hw = True
+                    break
+                elif choice_hw in ('N', 'n'):
+                    choice_hw = False
+                    break
+                else:
+                    print("输入无效，请输入 Y 或 N。")
             # 0 表示全部刷一遍
             for ins in courses:
                 videos_id_name_dic = video_helper.get_videos_ids(
@@ -110,14 +121,28 @@ if __name__ == "__main__":
                 video_helper.multiple_watch_video(
                     videos_id_name_dic, course_id, user_id, classroom_id, sku_id
                 )
-            for ins in courses:
-                homework_helper.do_homework(
-                    ins["classroom_id"],
-                    ins["course_sign"],
-                    ins["course_name"],
-                )
+            if choice_hw:  # 如果选择做作业，执行
+                for ins in courses:
+                    homework_helper.do_homework(
+                        ins["classroom_id"],
+                        ins["course_sign"],
+                        ins["course_name"],
+                    )
+            else:
+                pass
         else:
             flag = False  # 输入合法则不需要循环
+            # 做不做作业
+            while True:
+                choice_hw = input("需不需要AI做作业（Y/N）：").strip()
+                if choice_hw in ('Y', 'y'):
+                    choice_hw = True
+                    break
+                elif choice_hw in ('N', 'n'):
+                    choice_hw = False
+                    break
+                else:
+                    print("输入无效，请输入 Y 或 N。")
             # 指定序号的课程刷一遍
             number = int(number) - 1
             videos_id_name_dic = video_helper.get_videos_ids(
@@ -132,9 +157,12 @@ if __name__ == "__main__":
             video_helper.multiple_watch_video(
                 videos_id_name_dic, course_id, user_id, classroom_id, sku_id
             )
-            homework_helper.do_homework(
-                courses[number]["classroom_id"],
-                courses[number]["course_sign"],
-                courses[number]["course_name"],
-            )
+            if choice_hw:  # 如果选择做作业，执行
+                homework_helper.do_homework(
+                    courses[number]["classroom_id"],
+                    courses[number]["course_sign"],
+                    courses[number]["course_name"],
+                )
+            else:
+                pass
         print("搞定啦")

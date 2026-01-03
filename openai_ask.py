@@ -1,6 +1,6 @@
 from openai import OpenAI
 import json
-
+import re
 
 class OpenAI_ask:
     def __init__(self):
@@ -29,11 +29,19 @@ class OpenAI_ask:
             ],
             temperature=0.7,
         )
-        if len(response.choices[0].message.content) == 1 or problem_type == 'FillBlank' or leaf_type == 4:
-            result = response.choices[0].message.content
+        # 1. 获取模型返回的原始全文
+        full_content = response.choices[0].message.content
+
+        # 2. 使用正则剔除 <think>...</think> 及其包含的所有内容
+        # flags=re.DOTALL 确保可以匹配跨行的思考过程
+        nothink_content = re.sub(r'<think>.*?</think>', '', full_content, flags=re.DOTALL).strip()
+
+        # 3. 基于清洗后的内容进行原有逻辑判断
+        if len(nothink_content) == 1 or problem_type == 'FillBlank' or leaf_type == 4:
+            result = nothink_content
         else:
             result = [
-                item.strip() for item in response.choices[0].message.content.split(",")
+                item.strip() for item in nothink_content.split(",") if item.strip()
             ]
         #print(f"result:\n{result}\n")
         return result
